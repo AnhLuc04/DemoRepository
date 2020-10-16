@@ -7,14 +7,14 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">firstName</th>
-        <th scope="col">lastName</th>
+        <th >firstName</th>
+        <th >lastName</th>
 
     </tr>
     </thead>
     <tbody>
     <tr th:each="customer : ${customer}">
-        <th scope="row"><a th:text="${customer.id}"></a></th>
+        <th ><a th:text="${customer.id}"></a></th>
         <td><a th:text="${customer.firstName}"></a></td>
         <td><a th:text="${customer.lastName}"></a></td>
     </tr>

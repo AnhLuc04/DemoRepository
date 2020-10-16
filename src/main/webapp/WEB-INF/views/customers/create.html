@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<form  th:action="@{/create-customers}" th:object="${customer}" method="post">
+<form  th:action="@{/customers/create}" th:object="${customer}" method="post">
     <table class="table">
         <tr>
-            <th scope="col">firstName</th>
-            <th scope="col"><input type="text" th:field="*{firstName}"/></th>
+            <td >firstName</td>
+
+            <td ><input type="text" th:field="*{firstName}"/></td>
+
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName</td>
         </tr>
         <tr>
-            <th scope="col" >lastName</th>
-            <th scope="col"><input type="text" th:field="*{lastName}"/></th>
+            <td>lastName</td>
+
+            <td><input type="text" th:field="*{lastName}"/></td>
+
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>
         </tr>
-            <th><input type="submit" value="Create customer"></th>
+            <td><input type="submit" value="Create customer"></td>
         </tr>
     </table>
 </form>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
 </body>
 </html>

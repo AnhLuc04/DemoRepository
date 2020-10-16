@@ -1,21 +1,33 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
-
-public class Customer {
+public class Customer implements Cloneable {
 
     @Id
 //    @GeneratedValue(strategy= GenerationType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Cú pháp sai")
+    @Size(min = 2, max = 30,message = "Cú pháp sai")
     private String firstName;
+//    @NotEmpty(message = "Cú pháp sai")
+//    @Size(min = 2, max = 30,message = "Cú pháp sai")
+    @Column(unique = true)
     private String lastName;
 
     public Customer() {}
 
     public Customer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Customer(Long id, @NotEmpty(message = "Cú pháp sai") @Size(min = 2, max = 30, message = "Cú pháp sai") String firstName, @NotEmpty(message = "Cú pháp sai") @Size(min = 2, max = 30, message = "Cú pháp sai") String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
