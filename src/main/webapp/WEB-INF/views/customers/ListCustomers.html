@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<body>
+<html>
+<form>
+    <label><input type="text" id="nameSearch" onchange="search()"></label>
+    <input type="submit" value="Search" onclick="search()">
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>firstName</th>
+        <th>lastName</th>
+    </tr>
+    </thead>
+    <tbody id="listStudent">
+    <tr th:each="customer : ${customer}">
+        <td><a th:text="${customer.firstName}"></a></td>
+        <td><a th:text="${customer.lastName}"></a></td>
+        <td><input hidden id="idCustomer" th:value="${customer.id}">
+            <a class="deleteClass" onclick="deleteProvince()" href="javascript:;">DeLETE</a></td>
+    </tr>
+    </tbody>
+</table>
+<div id="container">
+    <form id="newCustomerForm" th:object="${customers}">
+        <input th:type="hidden" id="idCustomers"  name="id" th:field="*{id}">
+        <table>
+            <tbody>
+            <tr>
+                <td>firstName:</td>
+                <td><input type="text" th:field="*{firstName}"/></td>
+            </tr>
+            <tr>
+                <td>lastName:</td>
+                <td><input  type="text" th:field="*{lastName}"/></td>
+            </tr>
+            <tr>
+                <td><input class="CreateClass" type="submit" value="Create" onclick="Create()" href="javascript:;"/></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="result"></div>
+    </form>
+</div>
+<form   th:object="${customer}">
+    <input th:type="hidden" id="idCustomer"  name="id" th:field="*{id}">
+    <table class="table">
+        <tr>
+            <th >firstName</th>
+            <th><input type="text" th:field="*{firstName}"/></th>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName</td>
+        </tr>
+        <tr>
+            <th>lastName</th>
+            <th><input type="text" th:field="*{lastName}"/></th>
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>
+        </tr>
+        <tr>
+
+            <th>
+                <input type="submit" value="Create customer" onclick="EditCustomer()"></th>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+</script>
+<script type="text/javascript">
+    function deleteProvince() {
+        let idClass = $('#idCustomer').val();
+        let a = $(event.target).closest("tr");
+        a.remove();
+        $.ajax({
+            type: "GET",
+            url: "/customers/" + idClass,
+        });
+        event.defaultPrevented;
+    }
+
+    function search() {
+        let name = $('#nameSearch').val();
+        let urlSearchParams = "/customers/search/" + name;
+        $.ajax({
+            type: 'GET',
+            url: urlSearchParams,
+            success: showListCustomer(urlSearchParams)
+        })
+        event.preventDefault()
+    }
+
+    function showListCustomer(url) {
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (dsc) {
+                let content = "";
+                for (let i = 0; i < dsc.length; i++) {
+                    content +=
+                        `<tr><td >${dsc[i].firstName}</td>`+
+                        `<td>${dsc[i].lastName}</td></tr>`+
+                            `<tr></tr>`
+
+                }
+                $('#listStudent').html(content);
+            }
+        })
+    }
+    function Create() {
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var json = {"firstName": firstName, "lastName": lastName};
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+
+            url:"/customers/create",
+
+            data: JSON.stringify(json),
+    //         success: function(customer) {
+    //             var respContent = "";
+    //             respContent += "<span class='success'>Create Oke: [";
+    //             respContent += customer.firstName + " : ";
+    //             respContent += customer.lastName + "]</span>"
+    //             $("#result").html(respContent);
+    //         }
+    //     });
+    //     event.preventDefault();
+    // };
+            success: showListCustomer("/customers/findAll")
+        })
+        event.preventDefault()
+    }
+</script>

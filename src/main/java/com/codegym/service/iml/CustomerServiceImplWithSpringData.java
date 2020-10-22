@@ -6,6 +6,8 @@ import com.codegym.model.Customer;
 import com.codegym.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -23,17 +25,19 @@ public class CustomerServiceImplWithSpringData implements CustomerService {
     }
 
     @Override
-    public Customer save(Customer customer) throws DuplicateLastNameException {
+    public Customer save(Customer customer) {
 //        return customerRepository.save(customer);
-        try {
             return customerRepository.save(customer);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateLastNameException();
-        }
     }
 
     @Override
     public void remove(Long id) {
         customerRepository.delete(id);
     }
+
+    @Override
+    public Iterable<Customer> findAllByFirstNameContaining(String name) {
+        return customerRepository.findAllByFirstNameContaining(name);
+    }
+
 }

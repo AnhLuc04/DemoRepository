@@ -6,8 +6,8 @@
 </head>
 <body>
 
-<form  th:action="@{customers/edit}" th:object="${customer}" method="post">
-    <input th:type="hidden" name="id" th:field="*{id}">
+<form   th:object="${customer}">
+    <input th:type="hidden" id="idCustomer"  name="id" th:field="*{id}">
     <table class="table">
         <tr>
             <th >firstName</th>
@@ -20,12 +20,41 @@
             <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>
         </tr>
         <tr>
-            <th><input type="submit" value="Create customer"></th>
+
+            <th>
+                <input type="submit" value="Create customer" onclick="EditCustomer()"></th>
         </tr>
     </table>
 </form>
-<th:block th:if="${message}">
-    <p th:text="${message}"></p>
-</th:block>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+</script>
+<script type="text/javascript">
+    function EditCustomer() {
+        let idClass = $('#idCustomer').val();
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var json = {"firstName": firstName, "lastName": lastName};
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "PUT",
+
+            url:"/customers/edit/"+ idClass,
+
+            data: JSON.stringify(json),
+                success: function(customer) {
+                    var respContent = "";
+                    respContent += "<span class='success'>Create Oke: [";
+                    respContent += customer.firstName + " : ";
+                    respContent += customer.lastName + "]</span>"
+                    $("#result").html(respContent);
+                }
+            });
+            event.preventDefault();
+            };
+</script>

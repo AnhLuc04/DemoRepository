@@ -2,30 +2,129 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+
+    <title>Create new Customer</title>
 </head>
 <body>
-<form  th:action="@{/customers/create}" th:object="${customer}" method="post">
-    <table class="table">
-        <tr>
-            <td >firstName</td>
-
-            <td ><input type="text" th:field="*{firstName}"/></td>
-
-            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName</td>
-        </tr>
-        <tr>
-            <td>lastName</td>
-
-            <td><input type="text" th:field="*{lastName}"/></td>
-
-            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>
-        </tr>
-            <td><input type="submit" value="Create customer"></td>
-        </tr>
-    </table>
-</form>
-<th:block th:if="${message}">
-    <p th:text="${message}"></p>
-</th:block>
+<div id="container">
+    <form id="newCustomerForm" th:object="${customer}">
+        <table>
+            <tbody>
+            <tr>
+                <td>firstName:</td>
+                <td><input type="text" th:field="*{firstName}"/></td>
+            </tr>
+            <tr>
+                <td>lastName:</td>
+                <td><input  type="text" th:field="*{lastName}"/></td>
+            </tr>
+            <tr>
+                <td><input class="CreateClass" type="submit" value="Create" onclick="Create()" href="javascript:;"/></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="result"></div>
+    </form>
+</div>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+</script>
+<script type="text/javascript">
+    function Create() {
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var json = {"firstName": firstName, "lastName": lastName};
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+
+            url:"/customers/create",
+
+            data: JSON.stringify(json),
+            success: function(customer) {
+                var respContent = "";
+                respContent += "<span class='success'>Create Oke: [";
+                respContent += customer.firstName + " : ";
+                respContent += customer.lastName + "]</span>"
+                $("#result").html(respContent);
+            }
+        });
+        event.preventDefault();
+        };
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<form  th:action="@{/customers/create}" th:object="${customer}" method="post">-->
+<!--    <table class="table">-->
+<!--        <tr>-->
+<!--            <td >firstName</td>-->
+
+<!--            <td ><input type="text" th:field="*{firstName}"/></td>-->
+
+<!--            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>lastName</td>-->
+
+<!--            <td><input type="text" th:field="*{lastName}"/></td>-->
+
+<!--            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>-->
+<!--        </tr>-->
+<!--            <td><input type="submit" value="Create customer"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</form>-->
+<!--<th:block th:if="${message}">-->
+<!--    <p th:text="${message}"></p>-->
+<!--</th:block>-->
+<!--</body>-->
+<!--</html>-->

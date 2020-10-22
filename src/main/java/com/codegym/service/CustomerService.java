@@ -11,7 +11,9 @@ public interface CustomerService {
 
     Customer findById(Long id);
 
-    Customer save(Customer customer) throws DuplicateLastNameException;
+    Customer save(Customer customer);
 
     void remove(Long id);
+
+    Iterable<Customer> findAllByFirstNameContaining(String name);
 }
