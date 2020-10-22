@@ -47,27 +47,7 @@
         <div id="result"></div>
     </form>
 </div>
-<form   th:object="${customer}">
-    <input th:type="hidden" id="idCustomer"  name="id" th:field="*{id}">
-    <table class="table">
-        <tr>
-            <th >firstName</th>
-            <th><input type="text" th:field="*{firstName}"/></th>
-            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName</td>
-        </tr>
-        <tr>
-            <th>lastName</th>
-            <th><input type="text" th:field="*{lastName}"/></th>
-            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName</td>
-        </tr>
-        <tr>
 
-            <th>
-                <input type="submit" value="Create customer" onclick="EditCustomer()"></th>
-        </tr>
-    </table>
-</form>
-</body>
 </html>
 <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">

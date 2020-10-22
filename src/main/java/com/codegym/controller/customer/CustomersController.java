@@ -1,6 +1,5 @@
 package com.codegym.controller.customer;
 
-import com.codegym.exception.DuplicateLastNameException;
 import com.codegym.model.Customer;
 import com.codegym.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +45,4 @@ public class CustomersController{
         customerService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Customer> edit(@PathVariable Long id, @RequestBody Customer customer) throws DuplicateLastNameException {
-        customer.setId(id);
-        customerService.save(customer);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }
